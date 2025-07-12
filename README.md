@@ -1,7 +1,3 @@
-Absolutely! Below is a complete and well-crafted `README.md` file for your **Tree Species Classification** project — designed to be **attractive, professional, and beginner/student-friendly**, while avoiding any mention of the PlantNet API.
-
----
-
 ## 📄 `README.md`
 
 ```markdown

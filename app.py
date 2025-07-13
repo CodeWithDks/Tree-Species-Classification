@@ -5,6 +5,7 @@ import base64
 import os
 import json
 from datetime import datetime
+import io
 
 # === PAGE CONFIG ===
 st.set_page_config(
@@ -129,12 +130,51 @@ st.markdown("""
         color: white;
     }
     
-    .upload-section {
-        background: #f8f9fa;
+    .camera-section {
+        background: #f0f8f0;
         padding: 1rem;
         border-radius: 10px;
         margin: 1rem 0;
-        border: 2px dashed #2E8B57;
+        border: 2px solid #4CAF50;
+        text-align: center;
+    }
+    
+    .camera-button {
+        background: #4CAF50;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin: 0.5rem;
+        transition: background 0.3s;
+    }
+    
+    .camera-button:hover {
+        background: #45a049;
+    }
+    
+    .tab-button {
+        background: #e8f5e8;
+        color: #2E8B57;
+        border: 2px solid #2E8B57;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        margin: 0.2rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+    }
+    
+    .tab-button.active {
+        background: #2E8B57;
+        color: white;
+    }
+    
+    .tab-button:hover {
+        background: #2E8B57;
+        color: white;
     }
     
     .info-box {
@@ -220,8 +260,21 @@ st.markdown("""
             padding: 0.4rem 0.8rem;
         }
         
-        .upload-section {
+        .camera-section {
             padding: 0.8rem;
+        }
+        
+        .camera-button {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .tab-button {
+            width: 48%;
+            margin: 0.1rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
         }
         
         .info-box {
@@ -318,51 +371,135 @@ with st.sidebar:
     - 📱 Multiple angles help accuracy
     """)
     
+    st.header("📷 Camera Tips")
+    st.markdown("""
+    **When using camera:**
+    - 🎯 Hold steady and focus
+    - 💡 Ensure good lighting
+    - 🔍 Get close to the plant
+    - 📐 Keep the subject centered
+    - 🚫 Avoid moving while capturing
+    """)
+    
     st.header("🔧 Settings")
     max_results = st.slider("Max Results", 1, 10, 5)
     show_details = st.checkbox("Show Detailed Info", True)
 
 # === MAIN CONTENT ===
-# Use responsive columns that stack on mobile
-col1, col2 = st.columns([1, 1])
-
-with col1:
-    st.markdown('<div class="upload-section">', unsafe_allow_html=True)
-    st.subheader("📤 Upload Images")
-    
-    image1 = st.file_uploader(
-        "Primary Image (Required)", 
-        type=["jpg", "jpeg", "png"],
-        help="Upload a clear image of the plant part you want to identify"
-    )
-    
-    if image1:
-        st.image(image1, caption="Primary Image", use_column_width=True)
-    
-    st.markdown('</div>', unsafe_allow_html=True)
-
-with col2:
-    st.markdown('<div class="upload-section">', unsafe_allow_html=True)
-    st.subheader("📤 Additional Image")
-    
-    image2 = st.file_uploader(
-        "Secondary Image (Optional)", 
-        type=["jpg", "jpeg", "png"],
-        help="Upload another angle or part of the same plant for better accuracy"
-    )
-    
-    if image2:
-        st.image(image2, caption="Secondary Image", use_column_width=True)
-    
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# === INFO BOX ===
+# Create tabs for different input methods
 st.markdown("""
-<div class="info-box">
-    <strong>💡 Pro Tip:</strong> For best identification results, upload images of different plant parts 
-    (leaves, flowers, bark, fruit) from the same plant. This helps the AI make more accurate predictions.
+<div style="text-align: center; margin: 1rem 0;">
+    <h3>🎯 Choose Your Input Method</h3>
 </div>
 """, unsafe_allow_html=True)
+
+# Create input method selection
+input_method = st.radio(
+    "Select how you want to provide images:",
+    ["📤 Upload Images", "📷 Take Real-time Photos"],
+    horizontal=True,
+    label_visibility="collapsed"
+)
+
+if input_method == "📤 Upload Images":
+    # Original upload functionality
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+        st.subheader("📤 Upload Images")
+        
+        image1 = st.file_uploader(
+            "Primary Image (Required)", 
+            type=["jpg", "jpeg", "png"],
+            help="Upload a clear image of the plant part you want to identify",
+            key="upload_primary"
+        )
+        
+        if image1:
+            st.image(image1, caption="Primary Image", use_column_width=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col2:
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+        st.subheader("📤 Additional Image")
+        
+        image2 = st.file_uploader(
+            "Secondary Image (Optional)", 
+            type=["jpg", "jpeg", "png"],
+            help="Upload another angle or part of the same plant for better accuracy",
+            key="upload_secondary"
+        )
+        
+        if image2:
+            st.image(image2, caption="Secondary Image", use_column_width=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+
+else:  # Camera mode
+    # Real-time camera functionality
+    st.markdown("""
+    <div class="info-box">
+        <strong>📷 Camera Mode:</strong> Take real-time photos using your device's camera. 
+        Make sure to allow camera permissions when prompted.
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        st.markdown('<div class="camera-section">', unsafe_allow_html=True)
+        st.subheader("📷 Primary Photo")
+        
+        camera_image1 = st.camera_input(
+            "Take a primary photo of the plant",
+            help="Point your camera at the plant and click to capture",
+            key="camera_primary"
+        )
+        
+        if camera_image1:
+            st.image(camera_image1, caption="Primary Photo", use_column_width=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col2:
+        st.markdown('<div class="camera-section">', unsafe_allow_html=True)
+        st.subheader("📷 Additional Photo")
+        
+        camera_image2 = st.camera_input(
+            "Take an additional photo (optional)",
+            help="Capture another angle or part of the same plant",
+            key="camera_secondary"
+        )
+        
+        if camera_image2:
+            st.image(camera_image2, caption="Additional Photo", use_column_width=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Set images based on camera input
+    image1 = camera_image1
+    image2 = camera_image2
+
+# === INFO BOX ===
+if input_method == "📤 Upload Images":
+    st.markdown("""
+    <div class="info-box">
+        <strong>💡 Pro Tip:</strong> For best identification results, upload images of different plant parts 
+        (leaves, flowers, bark, fruit) from the same plant. This helps the AI make more accurate predictions.
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+    <div class="info-box">
+        <strong>📸 Camera Tips:</strong> 
+        • Hold your device steady while taking photos<br>
+        • Ensure good lighting for clear images<br>
+        • Get close to the plant for detailed shots<br>
+        • Take photos of different parts (leaves, flowers, bark) for better accuracy
+    </div>
+    """, unsafe_allow_html=True)
 
 # === ENHANCED CLASSIFICATION LOGIC ===
 if image1:
@@ -371,7 +508,14 @@ if image1:
         def process_image(uploaded_file, filename):
             """Process and save uploaded image with error handling"""
             try:
-                img = Image.open(uploaded_file)
+                # Handle both uploaded files and camera input
+                if hasattr(uploaded_file, 'read'):
+                    # For camera input or file upload
+                    image_data = uploaded_file.read()
+                    img = Image.open(io.BytesIO(image_data))
+                else:
+                    # For regular file uploads
+                    img = Image.open(uploaded_file)
                 
                 # Handle different image modes
                 if img.mode in ("RGBA", "P"):
@@ -449,6 +593,12 @@ if image1:
             params = {"api-key": API_KEY}
             
             with st.spinner("🔍 Analyzing images with AI... This may take a few moments"):
+                # Show different messages based on input method
+                if input_method == "📷 Take Real-time Photos":
+                    st.info("📸 Processing your camera photos...")
+                else:
+                    st.info("📤 Processing your uploaded images...")
+                    
                 try:
                     response = requests.post(
                         API_URL, 
@@ -597,7 +747,11 @@ if image1:
                 pass
 
 else:
-    st.info("👆 Please upload at least one image to start the identification process.")
+    # Show different messages based on input method
+    if input_method == "📷 Take Real-time Photos":
+        st.info("📸 Please take at least one photo using your camera to start the identification process.")
+    else:
+        st.info("👆 Please upload at least one image to start the identification process.")
 
 # === FOOTER ===
 st.markdown("""

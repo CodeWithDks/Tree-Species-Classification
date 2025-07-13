@@ -659,7 +659,7 @@ if image1:
                                         """, unsafe_allow_html=True)
                                         
                                     except Exception as e:
-                                        st.error(f"❌ Error processing result #{i+1}: {str(e)}")
+                                        st.error(f"❌ Errors processing result #{i+1}: {str(e)}")
                                         continue
                                 
                                 # Show additional info if enabled

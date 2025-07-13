@@ -14,11 +14,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# === CUSTOM CSS FOR RESPONSIVE DESIGN ===
+# === ENHANCED CUSTOM CSS FOR MOBILE RESPONSIVENESS ===
 st.markdown("""
 <style>
     .main {
-        padding: 1rem;
+        padding: 0.5rem;
     }
     
     .stApp {
@@ -28,35 +28,72 @@ st.markdown("""
     
     .header-container {
         background: linear-gradient(135deg, #2E8B57 0%, #228B22 100%);
-        padding: 2rem;
+        padding: 1.5rem;
         border-radius: 10px;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         text-align: center;
         color: white;
     }
     
+    .header-container h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .header-container p {
+        margin: 0.5rem 0;
+    }
+    
     .result-card {
         background: white;
-        padding: 1.5rem;
+        padding: 1rem;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         margin: 1rem 0;
         border-left: 4px solid #2E8B57;
+        word-wrap: break-word;
+    }
+    
+    .result-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: #2E8B57;
+    }
+    
+    .result-card p {
+        margin: 0.5rem 0;
+        line-height: 1.4;
+        font-size: 0.9rem;
+    }
+    
+    .result-card ul {
+        margin: 0.5rem 0;
+        padding-left: 1.2rem;
+    }
+    
+    .result-card li {
+        margin: 0.3rem 0;
+        font-size: 0.9rem;
+        line-height: 1.3;
     }
     
     .confidence-high {
         color: #2E8B57;
         font-weight: bold;
+        font-size: 1rem;
     }
     
     .confidence-medium {
         color: #FFA500;
         font-weight: bold;
+        font-size: 1rem;
     }
     
     .confidence-low {
         color: #FF6B6B;
         font-weight: bold;
+        font-size: 1rem;
     }
     
     .footer {
@@ -71,7 +108,7 @@ st.markdown("""
     .developer-info {
         display: flex;
         justify-content: center;
-        gap: 1rem;
+        gap: 0.5rem;
         margin-top: 1rem;
         flex-wrap: wrap;
     }
@@ -82,8 +119,9 @@ st.markdown("""
         padding: 0.5rem 1rem;
         border-radius: 20px;
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         transition: background 0.3s;
+        display: inline-block;
     }
     
     .social-link:hover {
@@ -93,7 +131,7 @@ st.markdown("""
     
     .upload-section {
         background: #f8f9fa;
-        padding: 2rem;
+        padding: 1rem;
         border-radius: 10px;
         margin: 1rem 0;
         border: 2px dashed #2E8B57;
@@ -105,47 +143,166 @@ st.markdown("""
         border-radius: 8px;
         margin: 1rem 0;
         border-left: 4px solid #2E8B57;
+        font-size: 0.9rem;
     }
     
+    .error-box {
+        background: #ffebee;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        border-left: 4px solid #f44336;
+        color: #c62828;
+    }
+    
+    .warning-box {
+        background: #fff3e0;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        border-left: 4px solid #ff9800;
+        color: #e65100;
+    }
+    
+    .species-name {
+        font-weight: bold;
+        color: #2E8B57;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .common-names {
+        font-style: italic;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Mobile-specific styles */
     @media (max-width: 768px) {
+        .main {
+            padding: 0.3rem;
+        }
+        
+        .header-container {
+            padding: 1rem;
+        }
+        
+        .header-container h1 {
+            font-size: 1.5rem;
+        }
+        
+        .header-container p {
+            font-size: 0.9rem;
+        }
+        
+        .result-card {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+        }
+        
+        .result-card h3 {
+            font-size: 1rem;
+        }
+        
+        .result-card p, .result-card li {
+            font-size: 0.8rem;
+        }
+        
         .developer-info {
             flex-direction: column;
             align-items: center;
         }
         
         .social-link {
-            width: 200px;
+            width: 150px;
             text-align: center;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
         }
         
-        .header-container {
-            padding: 1rem;
+        .upload-section {
+            padding: 0.8rem;
+        }
+        
+        .info-box {
+            padding: 0.8rem;
+            font-size: 0.8rem;
+        }
+        
+        /* Fix for Streamlit columns on mobile */
+        .element-container {
+            width: 100% !important;
+        }
+        
+        /* Better spacing for mobile */
+        .stButton > button {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+        
+        /* Sidebar adjustments */
+        .sidebar .sidebar-content {
+            padding: 1rem 0.5rem;
+        }
+    }
+    
+    /* Extra small devices */
+    @media (max-width: 480px) {
+        .header-container h1 {
+            font-size: 1.3rem;
+        }
+        
+        .result-card h3 {
+            font-size: 0.9rem;
+        }
+        
+        .result-card p, .result-card li {
+            font-size: 0.75rem;
+        }
+        
+        .confidence-high, .confidence-medium, .confidence-low {
+            font-size: 0.9rem;
         }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# === LOAD API KEY FROM SECRETS ===
+# === ENHANCED ERROR HANDLING FOR API KEY ===
+@st.cache_data
 def load_api_key():
+    """Load API key with better error handling"""
     try:
-        return st.secrets["plantnet"]["api_key"]
-    except:
-        st.error("⚠️ API key not found. Please configure secrets.toml file.")
+        if hasattr(st, 'secrets') and "plantnet" in st.secrets and "api_key" in st.secrets["plantnet"]:
+            return st.secrets["plantnet"]["api_key"]
+        else:
+            st.error("⚠️ API key not found in secrets. Please configure your PlantNet API key in secrets.toml")
+            st.markdown("""
+            <div class="error-box">
+                <strong>Configuration Required:</strong><br>
+                1. Create a secrets.toml file in your project root<br>
+                2. Add your PlantNet API key:<br>
+                <code>[plantnet]<br>api_key = "your_api_key_here"</code>
+            </div>
+            """, unsafe_allow_html=True)
+            st.stop()
+    except Exception as e:
+        st.error(f"❌ Error loading API key: {str(e)}")
         st.stop()
 
-API_KEY = load_api_key()
-API_URL = "https://my-api.plantnet.org/v2/identify/all"
+# Try to load API key
+try:
+    API_KEY = load_api_key()
+    API_URL = "https://my-api.plantnet.org/v2/identify/all"
+except:
+    st.error("⚠️ Unable to initialize the application. Please check your configuration.")
+    st.stop()
 
 # === HEADER ===
 st.markdown("""
 <div class="header-container">
     <h1>🌿 Tree Species Classification</h1>
-    <p style="font-size: 1.2rem; margin-top: 1rem;">
-        AI-powered tool for identifying trees and plants
-    </p>
-    <p style="font-size: 1rem; opacity: 0.9;">
-        Upload clear images of leaves, flowers, or bark for accurate species identification
-    </p>
+    <p>AI-powered tool for identifying trees and plants</p>
+    <p>Upload clear images of leaves, flowers, or bark for accurate species identification</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -166,6 +323,7 @@ with st.sidebar:
     show_details = st.checkbox("Show Detailed Info", True)
 
 # === MAIN CONTENT ===
+# Use responsive columns that stack on mobile
 col1, col2 = st.columns([1, 1])
 
 with col1:
@@ -206,20 +364,37 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# === CLASSIFICATION BUTTON ===
+# === ENHANCED CLASSIFICATION LOGIC ===
 if image1:
     if st.button("🔍 Identify Plant Species", type="primary", use_container_width=True):
         
         def process_image(uploaded_file, filename):
-            """Process and save uploaded image"""
-            img = Image.open(uploaded_file)
-            if img.mode in ("RGBA", "P"):
-                img = img.convert("RGB")
-            # Resize large images for better API performance
-            if img.size[0] > 1024 or img.size[1] > 1024:
-                img.thumbnail((1024, 1024), Image.Resampling.LANCZOS)
-            img.save(filename, format="PNG", optimize=True)
-            return open(filename, "rb")
+            """Process and save uploaded image with error handling"""
+            try:
+                img = Image.open(uploaded_file)
+                
+                # Handle different image modes
+                if img.mode in ("RGBA", "P"):
+                    # Create a white background for transparency
+                    background = Image.new("RGB", img.size, (255, 255, 255))
+                    if img.mode == "RGBA":
+                        background.paste(img, mask=img.split()[-1])
+                    else:
+                        background.paste(img)
+                    img = background
+                
+                # Resize large images for better API performance
+                max_size = 1024
+                if img.size[0] > max_size or img.size[1] > max_size:
+                    img.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+                
+                # Save with optimization
+                img.save(filename, format="JPEG", quality=85, optimize=True)
+                return open(filename, "rb")
+                
+            except Exception as e:
+                st.error(f"❌ Error processing image: {str(e)}")
+                return None
         
         def get_confidence_class(score):
             """Get confidence level class for styling"""
@@ -233,109 +408,193 @@ if image1:
         def format_confidence(score):
             """Format confidence score with emoji"""
             if score >= 70:
-                return f"🟢 {score}% (High Confidence)"
+                return f"🟢 {score:.1f}% (High Confidence)"
             elif score >= 40:
-                return f"🟡 {score}% (Medium Confidence)"
+                return f"🟡 {score:.1f}% (Medium Confidence)"
             else:
-                return f"🔴 {score}% (Low Confidence)"
+                return f"🔴 {score:.1f}% (Low Confidence)"
         
-        # Create images directory
-        os.makedirs("images", exist_ok=True)
+        def safe_get(dictionary, key, default="Not available"):
+            """Safely get value from dictionary with fallback"""
+            try:
+                value = dictionary.get(key, default)
+                return value if value else default
+            except:
+                return default
+        
+        # Create images directory with error handling
+        try:
+            os.makedirs("images", exist_ok=True)
+        except Exception as e:
+            st.error(f"❌ Error creating images directory: {str(e)}")
+            st.stop()
         
         # Process images
-        file1 = process_image(image1, "images/img1.png")
-        files = [("images", ("img1.png", file1, "image/png"))]
-        
-        if image2:
-            file2 = process_image(image2, "images/img2.png")
-            files.append(("images", ("img2.png", file2, "image/png")))
-        
-        params = {"api-key": API_KEY}
-        
-        with st.spinner("🔍 Analyzing images with AI... Please wait"):
-            try:
-                response = requests.post(API_URL, files=files, params=params, timeout=30)
+        try:
+            file1 = process_image(image1, "images/img1.jpg")
+            if file1 is None:
+                st.error("❌ Failed to process the primary image. Please try a different image.")
+                st.stop()
                 
-                if response.status_code == 200:
-                    result = response.json()
-                    results = result.get("results", [])
-                    
-                    if results:
-                        st.success("✅ Classification Complete!")
-                        
-                        # Display results
-                        st.subheader(f"🌱 Top {min(len(results), max_results)} Results:")
-                        
-                        for i, r in enumerate(results[:max_results]):
-                            species = r.get("species", {})
-                            name = species.get("scientificNameWithoutAuthor", "Unknown Species")
-                            common = species.get("commonNames", [])
-                            score = round(r.get("score", 0) * 100, 2)
-                            family = species.get("family", {}).get("scientificNameWithoutAuthor", "Unknown Family")
-                            genus = species.get("genus", {}).get("scientificNameWithoutAuthor", "Unknown Genus")
-                            
-                            confidence_class = get_confidence_class(score)
-                            
-                            st.markdown(f"""
-                            <div class="result-card">
-                                <h3>#{i+1} {name}</h3>
-                                <p class="{confidence_class}">
-                                    {format_confidence(score)}
-                                </p>
-                                <p><strong>🏷️ Common Names:</strong> {', '.join(common[:3]) if common else 'Not available'}</p>
-                                <p><strong>👨‍🔬 Scientific Classification:</strong></p>
-                                <ul>
-                                    <li><strong>Family:</strong> {family}</li>
-                                    <li><strong>Genus:</strong> {genus}</li>
-                                    <li><strong>Species:</strong> {name}</li>
-                                </ul>
-                            </div>
-                            """, unsafe_allow_html=True)
-                        
-                        # Show additional info if enabled
-                        if show_details and len(results) > 0:
-                            st.subheader("📊 Analysis Summary")
-                            
-                            col1, col2, col3 = st.columns(3)
-                            
-                            with col1:
-                                st.metric("Total Matches", len(results))
-                            
-                            with col2:
-                                highest_score = max([r.get("score", 0) * 100 for r in results])
-                                st.metric("Best Match", f"{highest_score:.1f}%")
-                            
-                            with col3:
-                                avg_score = sum([r.get("score", 0) * 100 for r in results]) / len(results)
-                                st.metric("Average Confidence", f"{avg_score:.1f}%")
-                            
-                            # Show timestamp
-                            st.info(f"🕐 Analysis completed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-                    
-                    else:
-                        st.warning("🤔 No species matches found. Try uploading clearer images or different plant parts.")
-                
+            files = [("images", ("img1.jpg", file1, "image/jpeg"))]
+            
+            file2 = None
+            if image2:
+                file2 = process_image(image2, "images/img2.jpg")
+                if file2 is not None:
+                    files.append(("images", ("img2.jpg", file2, "image/jpeg")))
                 else:
-                    st.error(f"❌ API Error {response.status_code}: {response.text}")
-                    
-            except requests.exceptions.Timeout:
-                st.error("⏱️ Request timeout. Please try again.")
-            except requests.exceptions.RequestException as e:
-                st.error(f"🌐 Network error: {str(e)}")
-            except Exception as e:
-                st.error(f"💥 Unexpected error: {str(e)}")
-            finally:
-                # Clean up files
-                file1.close()
-                if image2:
-                    file2.close()
-                # Remove temporary files
+                    st.warning("⚠️ Secondary image could not be processed. Continuing with primary image only.")
+            
+            params = {"api-key": API_KEY}
+            
+            with st.spinner("🔍 Analyzing images with AI... This may take a few moments"):
                 try:
-                    os.remove("images/img1.png")
-                    if image2:
-                        os.remove("images/img2.png")
-                except:
-                    pass
+                    response = requests.post(
+                        API_URL, 
+                        files=files, 
+                        params=params, 
+                        timeout=45  # Increased timeout
+                    )
+                    
+                    if response.status_code == 200:
+                        try:
+                            result = response.json()
+                            results = result.get("results", [])
+                            
+                            if results and len(results) > 0:
+                                st.success("✅ Classification Complete!")
+                                
+                                # Display results with enhanced formatting
+                                st.subheader(f"🌱 Top {min(len(results), max_results)} Results:")
+                                
+                                for i, r in enumerate(results[:max_results]):
+                                    try:
+                                        species = r.get("species", {})
+                                        score = round(r.get("score", 0) * 100, 2)
+                                        
+                                        # Safely extract species information
+                                        scientific_name = safe_get(species, "scientificNameWithoutAuthor", "Unknown Species")
+                                        common_names = species.get("commonNames", [])
+                                        family_info = species.get("family", {})
+                                        genus_info = species.get("genus", {})
+                                        
+                                        family_name = safe_get(family_info, "scientificNameWithoutAuthor", "Unknown Family")
+                                        genus_name = safe_get(genus_info, "scientificNameWithoutAuthor", "Unknown Genus")
+                                        
+                                        confidence_class = get_confidence_class(score)
+                                        
+                                        # Format common names
+                                        common_names_str = "Not available"
+                                        if common_names and len(common_names) > 0:
+                                            # Take first 3 common names
+                                            common_names_str = ', '.join(common_names[:3])
+                                        
+                                        st.markdown(f"""
+                                        <div class="result-card">
+                                            <h3>#{i+1} {scientific_name}</h3>
+                                            <p class="{confidence_class}">
+                                                {format_confidence(score)}
+                                            </p>
+                                            <div class="common-names">
+                                                <strong>🏷️ Common Names:</strong> {common_names_str}
+                                            </div>
+                                            <p><strong>👨‍🔬 Scientific Classification:</strong></p>
+                                            <ul>
+                                                <li><strong>Family:</strong> {family_name}</li>
+                                                <li><strong>Genus:</strong> {genus_name}</li>
+                                                <li><strong>Species:</strong> {scientific_name}</li>
+                                            </ul>
+                                        </div>
+                                        """, unsafe_allow_html=True)
+                                        
+                                    except Exception as e:
+                                        st.error(f"❌ Error processing result #{i+1}: {str(e)}")
+                                        continue
+                                
+                                # Show additional info if enabled
+                                if show_details and len(results) > 0:
+                                    st.subheader("📊 Analysis Summary")
+                                    
+                                    try:
+                                        col1, col2, col3 = st.columns(3)
+                                        
+                                        with col1:
+                                            st.metric("Total Matches", len(results))
+                                        
+                                        with col2:
+                                            highest_score = max([r.get("score", 0) * 100 for r in results if r.get("score", 0) > 0])
+                                            st.metric("Best Match", f"{highest_score:.1f}%")
+                                        
+                                        with col3:
+                                            valid_scores = [r.get("score", 0) * 100 for r in results if r.get("score", 0) > 0]
+                                            if valid_scores:
+                                                avg_score = sum(valid_scores) / len(valid_scores)
+                                                st.metric("Average Confidence", f"{avg_score:.1f}%")
+                                            else:
+                                                st.metric("Average Confidence", "N/A")
+                                        
+                                        # Show timestamp
+                                        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                                        st.info(f"🕐 Analysis completed at {timestamp}")
+                                        
+                                    except Exception as e:
+                                        st.warning(f"⚠️ Could not generate analysis summary: {str(e)}")
+                            
+                            else:
+                                st.markdown("""
+                                <div class="warning-box">
+                                    <strong>🤔 No species matches found.</strong><br>
+                                    This could be due to:<br>
+                                    • Image quality issues<br>
+                                    • Unusual plant species<br>
+                                    • Unclear plant parts<br><br>
+                                    Try uploading clearer images or different plant parts.
+                                </div>
+                                """, unsafe_allow_html=True)
+                                
+                        except json.JSONDecodeError:
+                            st.error("❌ Invalid response from API. Please try again.")
+                        except Exception as e:
+                            st.error(f"❌ Error processing API response: {str(e)}")
+                    
+                    elif response.status_code == 401:
+                        st.error("🔑 Invalid API key. Please check your PlantNet API key configuration.")
+                    elif response.status_code == 429:
+                        st.error("⏱️ API rate limit exceeded. Please wait a moment before trying again.")
+                    elif response.status_code == 413:
+                        st.error("📸 Image file too large. Please use smaller images (max 5MB).")
+                    else:
+                        st.error(f"❌ API Error {response.status_code}: {response.text}")
+                        
+                except requests.exceptions.Timeout:
+                    st.error("⏱️ Request timeout. The API is taking too long to respond. Please try again.")
+                except requests.exceptions.ConnectionError:
+                    st.error("🌐 Connection error. Please check your internet connection and try again.")
+                except requests.exceptions.RequestException as e:
+                    st.error(f"🌐 Network error: {str(e)}")
+                except Exception as e:
+                    st.error(f"💥 Unexpected error during API call: {str(e)}")
+                    
+        except Exception as e:
+            st.error(f"💥 Error during image processing: {str(e)}")
+            
+        finally:
+            # Clean up files safely
+            try:
+                if 'file1' in locals() and file1:
+                    file1.close()
+                if 'file2' in locals() and file2:
+                    file2.close()
+                    
+                # Remove temporary files
+                for filename in ["images/img1.jpg", "images/img2.jpg"]:
+                    if os.path.exists(filename):
+                        os.remove(filename)
+                        
+            except Exception as e:
+                # Silent cleanup - don't bother user with cleanup errors
+                pass
 
 else:
     st.info("👆 Please upload at least one image to start the identification process.")
@@ -356,7 +615,7 @@ st.markdown("""
             🌐 Portfolio
         </a>
     </div>
-    <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">
+    <p style="margin-top: 1rem; color: #666; font-size: 0.8rem;">
         🌿 Powered by advanced AI and image recognition | Built with Streamlit
     </p>
 </div>
